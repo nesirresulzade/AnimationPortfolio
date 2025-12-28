@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
+import GithubButton from './GithubButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,44 +58,76 @@ const About = () => {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
   const cardsRef = useRef([]);
+  const titleRef = useRef([]);
   const stackRef = useRef(null);
+  const intervalRef = useRef(null);
 
   useGSAP(() => {
+    const tl = gsap.timeline();
+    
     if (headerRef.current) {
-      gsap.fromTo(
+      tl.fromTo(
         headerRef.current,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, delay: 0.2 }
+        { opacity: 1, y: 0, duration: 0.8 },
+        0
       );
     }
+    
     if (techRef.current) {
-      gsap.from(techRef.current, {
-        opacity: 0,
-        x: -30,
-        scrollTrigger: {
-          trigger: techRef.current,
-          start: 'top center+=100',
-          end: 'center center',
-          scrub: 0.5,
-        },
-        duration: 1,
-        ease: 'power2.out',
-      });
+      tl.fromTo(
+        techRef.current,
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' },
+        0.2
+      );
+    }
+    
+    // Stack cards entrance animation on load
+    if (stackRef.current) {
+      tl.fromTo(
+        stackRef.current.children,
+        { opacity: 0, x: 200, rotateZ: -5 },
+        { opacity: 1, x: 0, rotateZ: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
+        0.4
+      );
     }
   }, []);
 
-  // Automatic card rotation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => {
-        setPrevIndex(prev);
-        return (prev + 1) % projects.length;
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
+  // Initial active card animation on load
+  useGSAP(() => {
+    if (cardsRef.current[0]) {
+      gsap.fromTo(
+        cardsRef.current[0],
+        { opacity: 0, x: 100, scale: 0.8 },
+        { opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power2.out', delay: 0.5 }
+      );
+    }
   }, []);
+
+  // Automatic card rotation with hover pause
+  useEffect(() => {
+    if (!isHovering) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => {
+          setPrevIndex(prev);
+          return (prev + 1) % projects.length;
+        });
+      }, 3000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isHovering]);
 
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -117,6 +150,16 @@ const About = () => {
         { x: 800, scale: 0.8, opacity: 0 },
         { x: 0, scale: 1, opacity: 1, duration: 0.8, ease: 'power2.out' },
         '-=0.4'
+      );
+    }
+
+    // Animate title with scale and opacity
+    if (titleRef.current[activeIndex]) {
+      tl.fromTo(
+        titleRef.current[activeIndex],
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: 'power2.out' },
+        '-=0.6'
       );
     }
 
@@ -155,7 +198,11 @@ const About = () => {
             </div>
 
             {/* Active Card Display */}
-            <div className="relative h-[500px] w-full">
+            <div 
+              className="relative h-[600px] w-full"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
               {projects.map((project, index) => (
                 <div
                   key={project.id}
@@ -175,25 +222,36 @@ const About = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="h-1/4 flex flex-col items-start justify-center p-6">
-                      <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                      <div className="flex gap-3">
-                        <a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-1 bg-yellow-500 text-black text-sm font-semibold rounded hover:bg-yellow-400 transition"
-                        >
-                          Demo
-                        </a>
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-1 bg-cyan-500 text-black text-sm font-semibold rounded hover:bg-cyan-400 transition"
-                        >
-                          Code
-                        </a>
+                    <div className="h-1/3 flex flex-col items-start justify-start pt-3 px-6 pb-6 gap-5">
+                      <h3 
+                        ref={(el) => (titleRef.current[activeIndex] = el)}
+                        className="text-2xl font-bold text-white"
+                      >
+                        {project.title}
+                      </h3>
+                      <div className="flex">
+                        <div className="scale-[0.65] origin-left">
+                          <button
+                            onClick={() => window.open(project.demo, '_blank', 'noopener,noreferrer')}
+                            className="animated-button"
+                            style={{ color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)' }}
+                          >
+                            <svg viewBox="0 0 24 24" className="arr-2" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                            </svg>
+                            <span className="text">Demo</span>
+                            <span className="circle"></span>
+                            <svg viewBox="0 0 24 24" className="arr-1" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                            </svg>
+                          </button>
+                        </div>
+                        <div className="scale-[0.65] origin-left">
+                          <GithubButton
+                            href={project.github}
+                            label="Code"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
