@@ -120,7 +120,6 @@ const Hero = () => {
     <section id="hero" className="relative h-dvh w-full overflow-hidden">
       {/* HERO FRAME */}
       <div id="hero-frame" className="relative h-dvh w-full overflow-hidden">
-        {/* Background overlay removed to avoid dark screen on load */}
 
         {/* Next video */}
         <video
@@ -147,32 +146,40 @@ const Hero = () => {
 
       {/* CLICKABLE PREVIEW */}
       <div className="absolute-center z-30 pointer-events-auto h-64 w-64">
-        <div
-          onClick={handleMiniVdClick}
-          className="relative h-full w-full cursor-pointer"
-        >
-          {/* Colored glow behind the circle */}
+        <div className="relative h-full w-full rounded-full">
+
           <div
-            className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(173,255,47,0.60),rgba(173,255,47,0.35),transparent_70%)] blur-2xl opacity-80"
+            className="pointer-events-none absolute inset-0 -z-10 rounded-full
+                 bg-[radial-gradient(closest-side,rgba(173,255,47,0.60),rgba(173,255,47,0.35),transparent_70%)]
+                 blur-2xl opacity-80"
           />
 
-          <video
-            ref={previewRef}
-            src={videos[(currentIndex + 1) % videos.length]}
-            id="current-video"
-            className="h-64 w-64 rounded-full object-cover ring-4 ring-[rgba(173,255,47,0.65)] shadow-[0_0_36px_rgba(173,255,47,0.45)]"
-            muted
-            autoPlay
-            loop
-            playsInline
-          />
+          {/* CLICKABLE + CLIP CONTAINER */}
+          <div
+            onClick={handleMiniVdClick}
+            className="relative h-full w-full cursor-pointer overflow-hidden rounded-full
+                 ring-4 ring-[rgba(173,255,47,0.65)]
+                 shadow-[0_0_36px_rgba(173,255,47,0.45)]"
+          >
+            <video
+              ref={previewRef}
+              src={videos[(currentIndex + 1) % videos.length]}
+              id="current-video"
+              className="h-full w-full object-cover rounded-full"
+              muted
+              autoPlay
+              loop
+              playsInline
+            />
+          </div>
+
         </div>
       </div>
 
       {/* CONTENT */}
       <div className="pointer-events-none absolute inset-0 z-40 flex items-center">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 px-6 md:grid-cols-2">
-          
+
           {/* LEFT TITLE */}
           <div className="pointer-events-auto">
             <TrueFocus
