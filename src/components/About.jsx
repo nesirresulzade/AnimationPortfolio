@@ -12,43 +12,78 @@ const projects = [
     id: 1,
     src: '/imgs/myProject/bigFinalApp.png',
     title: 'E-commerce Website',
-    demo: 'https://example.com/demo1',
-    github: 'https://github.com/yourrepo/project1'
+    demo: 'https://big-app-final.vercel.app/',
+    github: 'https://github.com/nesirresulzade/BigAPP-Final'
   },
   {
     id: 2,
     src: '/imgs/myProject/bookShop.png',
     title: 'Book Shop',
-    demo: 'https://example.com/demo2',
-    github: 'https://github.com/yourrepo/project2'
+    demo: 'https://library-app-swart-eight.vercel.app/',
+    github: 'https://github.com/nesirresulzade/LibraryApp'
   },
   {
     id: 3,
     src: '/imgs/myProject/brainquizSite.png',
     title: 'Brain Quiz',
-    demo: 'https://example.com/demo3',
-    github: 'https://github.com/yourrepo/project3'
+    demo: 'https://brain-quiz-two.vercel.app/',
+    github: 'https://github.com/nesirresulzade/BrainQuiz'
   },
   {
     id: 4,
     src: '/imgs/myProject/currency.png',
     title: 'Currency Converter',
-    demo: 'https://example.com/demo4',
-    github: 'https://github.com/yourrepo/project4'
+    demo: 'https://currency-app-with-react.vercel.app/',
+    github: 'https://github.com/nesirresulzade/CurrencyAppWithReact'
   },
   {
     id: 5,
     src: '/imgs/myProject/musicMobilApp.png',
     title: 'Music App',
-    demo: 'https://example.com/demo5',
-    github: 'https://github.com/yourrepo/project5'
+    demo: 'https://music-player-with-react-app.vercel.app/',
+    github: 'https://github.com/nesirresulzade/MusicPlayerWithReactApp'
   },
   {
     id: 6,
     src: '/imgs/myProject/pokemon.png',
     title: 'Pokemon Game',
-    demo: 'https://example.com/demo6',
-    github: 'https://github.com/yourrepo/project6'
+    demo: 'https://pokemon-game-with-react.vercel.app/',
+    github: 'https://github.com/nesirresulzade/PokemonGameWithReact'
+  },
+  {
+    id: 7,
+    src: '/imgs/myProject/projects-1.png',
+    title: 'Weather App (HTML, CSS, JS)',
+    demo: 'https://nesirresulzade.github.io/WeatherApp/',
+    github: 'https://github.com/nesirresulzade/WeatherApp'
+  },
+  {
+    id: 8,
+    src: '/imgs/myProject/projects-2.png',
+    title: 'Hangman Game',
+    demo: 'https://nesirresulzade.github.io/HangMan/',
+    github: 'https://github.com/nesirresulzade/HangMan'
+  },
+  {
+    id: 9,
+    src: '/imgs/myProject/projects-3.png',
+    title: 'Bonus Card',
+    demo: 'https://nesirresulzade.github.io/BonusCard/',
+    github: 'https://github.com/nesirresulzade/BonusCard'
+  },
+  {
+    id: 10,
+    src: '/imgs/myProject/ReactWithWeather.png',
+    title: 'React Weather',
+    demo: 'https://reactwith-weather-app.vercel.app/',
+    github: 'https://github.com/nesirresulzade/ReactwithWeatherApp'
+  },
+  {
+    id: 11,
+    src: '/imgs/myProject/usePanel.png',
+    title: 'Control Panel UI',
+    demo: 'https://user-register-one.vercel.app/',
+    github: 'https://github.com/nesirresulzade/UserRegister'
   },
 ];
 

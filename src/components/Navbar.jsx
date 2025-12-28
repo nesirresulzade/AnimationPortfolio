@@ -57,7 +57,7 @@ const Navbar = () => {
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-2 text-white group">
           <span className="inline-flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-black shadow-lg transition-all duration-300 group-hover:shadow-emerald-400/50">
-            NR
+            <img src="/code-slash.svg" alt="logo" className="h-5 w-5 object-contain" />
           </span>
           <span className="hidden sm:inline-block font-bold tracking-wide">
             Nasir Rasulzada

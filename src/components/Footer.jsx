@@ -10,12 +10,6 @@ const Footer = () => {
             <p className="text-2xl font-bold text-slate-900">Nasir Rasulzada</p>
             <p className="text-slate-600">
               <span className="inline-block animate-pulse text-emerald-600 font-semibold">Frontend Developer</span>
-              <span className="mx-1">•</span>
-              <span className="inline-block text-cyan-500 font-semibold">React</span>
-              <span className="mx-1">•</span>
-              <span className="inline-block text-green-600 font-semibold">GSAP</span>
-              <span className="mx-1">•</span>
-              <span className="inline-block text-sky-500 font-semibold">Tailwind</span>
             </p>
           </div>
 
@@ -32,8 +26,7 @@ const Footer = () => {
             <li className="icon github footer-icon">
               <span className="tooltip">GitHub</span>
               <a
-                href="https://github.com/your-username"
-                target="_blank"
+                href="https://github.com/nesirresulzade/partfolio"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
                 className="text-black"
@@ -44,8 +37,7 @@ const Footer = () => {
             <li className="icon linkedin footer-icon">
               <span className="tooltip">LinkedIn</span>
               <a
-                href="https://www.linkedin.com/in/your-username"
-                target="_blank"
+                href="https://www.linkedin.com/in/nasir-rasulzada-28a6b7392/"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
                 className="text-[#0A66C2]"
@@ -56,8 +48,7 @@ const Footer = () => {
             <li className="icon instagram footer-icon">
               <span className="tooltip">Instagram</span>
               <a
-                href="https://instagram.com/your-username"
-                target="_blank"
+                href="https://www.instagram.com/resulzade_nesir?igsh=MWZvYzJrdHd3NWYyYw=="
                 rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="text-[#e4405f]"
