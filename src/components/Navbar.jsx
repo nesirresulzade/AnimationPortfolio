@@ -46,13 +46,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed left-1/2 -translate-x-1/2 top-0 z-50 transition-all duration-500 w-full max-w-7xl bg-[rgba(0,0,0,0.5)] backdrop-blur-md ${
         isScrolled
-          ? 'bg-[rgba(0,0,0,0.65)] backdrop-blur-md border-b border-white/10 shadow-lg'
-          : 'bg-transparent'
+          ? 'border-b border-white/10 shadow-lg'
+          : ''
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex items-center justify-between px-6 py-3">
 
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-2 text-white group">
@@ -103,7 +103,7 @@ const Navbar = () => {
 
       </div>
     </nav>
-  )
-}
+  )}
+
 
 export default Navbar
