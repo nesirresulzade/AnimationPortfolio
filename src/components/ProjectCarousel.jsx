@@ -111,17 +111,34 @@ const ProjectCarousel = ({ projects }) => {
               const index = idx;
               const originalIndex = projects.findIndex((p) => p.id === project.id);
               const baseLeft = 120;
-              const left = baseLeft + index * 32;
-              const top = 40 + index * 28;
+              const baseTop = 40;
+              const normalSpacingX = 32;
+              const hoverSpacingX = 36; // subtle extra horizontal spacing when hovering
+              const normalSpacingY = 28;
+              const hoverSpacingY = 32; // subtle extra vertical spacing when hovering
+
+              const spacingX = hoveredStackIndex !== null ? hoverSpacingX : normalSpacingX;
+              const spacingY = hoveredStackIndex !== null ? hoverSpacingY : normalSpacingY;
+
+              const left = baseLeft + index * spacingX;
+              const top = baseTop + index * spacingY;
+
               const rotate = -8 + index * 4;
               const baseScale = 1 - index * 0.03;
-              const hoverMultiplier = hoveredStackIndex === index ? 0.96 : 1;
+              const hoverMultiplier = hoveredStackIndex === index ? 1.01 : 1; // very subtle scale on hover
               const scale = baseScale * hoverMultiplier;
               const opacity = Math.max(0.15, 1 - index * 0.06);
-              const zIndex = 1000 - index;
+              const zIndex = 1000 - index; // keep original stacking order, no pop-forward
 
               return (
-                <div key={`${project.id}-${index}`} onMouseEnter={() => { setIsHovering(true); setHoveredStackIndex(index); }} onMouseLeave={() => { setIsHovering(false); setHoveredStackIndex(null); }} onClick={() => { setPrevIndex(activeIndex); setActiveIndex(originalIndex); }} className="absolute rounded-xl overflow-hidden shadow-2xl border border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 transition-all duration-200 ease-out" style={{ width: '300px', height: '380px', left: `${left}px`, top: `${top}px`, zIndex, transform: `rotate(${rotate}deg) scale(${scale})`, opacity, cursor: 'pointer' }}>
+                <div
+                  key={`${project.id}-${index}`}
+                  onMouseEnter={() => { setIsHovering(true); setHoveredStackIndex(index); }}
+                  onMouseLeave={() => { setIsHovering(false); setHoveredStackIndex(null); }}
+                  onClick={() => { setPrevIndex(activeIndex); setActiveIndex(originalIndex); }}
+                  className="absolute rounded-xl overflow-hidden shadow-2xl border border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 transition-all duration-300 ease-out"
+                  style={{ width: '300px', height: '380px', left: `${left}px`, top: `${top}px`, zIndex, transform: `rotate(${rotate}deg) scale(${scale})`, opacity, cursor: 'pointer' }}
+                >
                   <img src={project.src} alt={project.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4"><p className="text-sm font-semibold text-white">{project.title}</p></div>
