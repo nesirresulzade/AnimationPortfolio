@@ -104,7 +104,7 @@ const Hero = () => {
             {/* Buttons */}
             <div className="mt-8 flex items-center justify-between max-w-sm w-full">
               <a
-                href="/myCV/Nasir_Rasulzada.pdf"
+                href="/myCV/Nasir_RasulzadaCV.pdf"
                 download
                 className="btn-12"
               >
@@ -112,7 +112,7 @@ const Hero = () => {
               </a>
 
               <GithubButton
-                href="https://github.com/NasirRasulzada"
+                href="https://github.com/nesirresulzade"
                 label="My GitHub"
               />
             </div>

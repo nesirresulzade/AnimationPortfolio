@@ -26,7 +26,7 @@ const Footer = () => {
             <li className="icon github footer-icon">
               <span className="tooltip">GitHub</span>
               <a
-                href="https://github.com/nesirresulzade/partfolio"
+                href="https://github.com/nesirresulzade"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
                 className="text-black"

@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-const GithubButton = ({ href = 'https://github.com/', label = 'GitHub' }) => {
+const GithubButton = ({ href, label }) => {
   return (
     <a
       className="btn-12"
