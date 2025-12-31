@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-12:-moz-focusring { outline: auto; }
 .btn-12 svg { display: block; vertical-align: middle; }
 .btn-12 [hidden] { display: none; }
-.btn-12 { border-radius: 99rem; border-width: 2px; overflow: hidden; padding: 0.8rem 3rem; position: relative; }
+.btn-12 { display: inline-flex; align-items: center; justify-content: center; border-radius: 99rem; border-width: 2px; overflow: hidden; padding: 0 1.2rem; position: relative; font-size: 0.95rem; white-space: nowrap; height: 2.8rem; min-width: 8rem; }
 .btn-12 span { mix-blend-mode: difference; }
 .btn-12:after,
 .btn-12:before {
@@ -132,11 +132,11 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 16px 36px;
-  border: 4px solid;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 3px solid;
   border-color: transparent;
-  font-size: 16px;
+  font-size: 13px;
   background-color: rgba(173, 255, 47, 0.12);
   border-radius: 100px;
   font-weight: 600;
@@ -145,14 +145,14 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 2px greenyellow;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .animated-button svg {
   position: absolute;
-  width: 24px;
+  width: 18px;
   fill: greenyellow;
   z-index: 9;
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .animated-button .arr-1 { right: 16px; }
 .animated-button .arr-2 { left: -25%; }
@@ -161,12 +161,12 @@ h1, h2, h3, h4, h5, h6 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-color: greenyellow;
   border-radius: 50%;
   opacity: 0;
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .animated-button .text {
   position: relative;
@@ -174,8 +174,8 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateX(-12px);
   transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.animated-button:hover {
-  box-shadow: 0 0 0 12px transparent;
+.animated-button:hover { 
+  box-shadow: 0 0 0 8px transparent;
   color: #212121;
   border-radius: 12px;
 }
@@ -184,7 +184,7 @@ h1, h2, h3, h4, h5, h6 {
 .animated-button:hover .text { transform: translateX(12px); }
 .animated-button:hover svg { fill: #212121; }
 .animated-button:active { scale: 0.95; box-shadow: 0 0 0 4px greenyellow; }
-.animated-button:hover .circle { width: 220px; height: 220px; opacity: 1; }
+.animated-button:hover .circle { width: 180px; height: 180px; opacity: 1; }
 
 /* Water text animation */
 .water-text {
@@ -240,31 +240,12 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Name gradient animation */
+/* Name: plain black */
 .name-gradient {
-  background: linear-gradient(
-    120deg,
-    #fbbf24 0%,
-    #f59e0b 25%,
-    #fbbf24 50%,
-    #f97316 75%,
-    #fbbf24 100%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: golden-shine 3s ease-in-out infinite;
-  text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
-}
-
-@keyframes golden-shine {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  color: #000;
+  -webkit-text-fill-color: #000;
+  background: none;
+  text-shadow: none;
 }
 
 /* Role text gradient */
@@ -290,6 +271,23 @@ h1, h2, h3, h4, h5, h6 {
   100% {
     background-position: 200% 50%;
   }
+}
+
+/* Live green animated text (for Developer word) */
+.live-green-text {
+  background: linear-gradient(90deg, #00d4ff 0%, #22c55e 50%, #34d399 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: live-green 2s linear infinite;
+  text-shadow: 0 0 22px rgba(34, 197, 94, 0.33);
+}
+
+@keyframes live-green {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Uiverse social icons (wrapper/icon/tooltip) */

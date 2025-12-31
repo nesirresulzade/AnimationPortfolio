@@ -10,7 +10,8 @@ const TrueFocus = ({
   glowColor = 'rgba(0, 255, 0, 0.6)',
   animationDuration = 0.5,
   pauseBetweenAnimations = 1,
-  wordStyles = []
+  wordStyles = [],
+  direction = 'column'
 }) => {
   const words = sentence.split(separator)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -62,7 +63,9 @@ const TrueFocus = ({
 
   return (
     <div
-      className="relative flex flex-col gap-2 justify-center items-start"
+      className={
+        `relative flex ${direction === 'row' ? 'flex-row items-center' : 'flex-col items-center'} gap-2 justify-center`
+      }
       ref={containerRef}
       style={{ outline: 'none', userSelect: 'none' }}
     >

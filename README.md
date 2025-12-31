@@ -10,7 +10,6 @@ Animated portfolio starter with GSAP, ScrollTrigger and Tailwind.
 
 ## Media structure
 Place your assets under `public/`:
-- Videos: `public/video/hero1.mp4`, `public/video/hero2.mp4`
 - Fonts: `public/fonts/` (zentry, circularweb, robert)
 - Images: `public/imgs/` (e.g. `myProject/projects-1.png`)
 

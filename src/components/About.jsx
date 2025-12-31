@@ -1,9 +1,8 @@
-// About.jsx
 import { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
-import GithubButton from './GithubButton';
+import ProjectCarousel from './ProjectCarousel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,6 +97,7 @@ const About = () => {
   const titleRef = useRef([]);
   const stackRef = useRef(null);
   const intervalRef = useRef(null);
+  const [hoveredStackIndex, setHoveredStackIndex] = useState(null);
 
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -209,133 +209,15 @@ const About = () => {
     }
   }, [activeIndex, prevIndex]);
 
+  // Compute stack of upcoming projects (all except active), starting from the next one on top
+  const stackProjects = [];
+  for (let i = 1; i < projects.length; i++) {
+    stackProjects.push(projects[(activeIndex + i) % projects.length]);
+  }
+
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative min-h-screen w-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20"
-    >
-      <div className="mx-auto max-w-7xl px-6 h-screen flex items-center">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Header + Active Card */}
-          <div className="space-y-8">
-            {/* Header */}
-            <div className="relative flex flex-col items-start gap-5">
-              <p ref={headerRef} className="text-xl md:text-2xl uppercase text-slate-300 font-bold tracking-wide">
-                Projects
-              </p>
-              <p ref={techRef} className="text-lg md:text-xl text-slate-300 font-semibold">
-                Built with: <span className="text-yellow-400">React</span> •
-                <span className="text-cyan-400"> GSAP</span> •
-                <span className="text-purple-400"> Tailwind</span> •
-                <span className="text-green-400"> JavaScript</span>
-              </p>
-            </div>
-
-            {/* Active Card Display */}
-            <div 
-              className="relative h-[600px] w-full"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              {projects.map((project, index) => (
-                <div
-                  key={project.id}
-                  ref={(el) => (cardsRef.current[index] = el)}
-                  className={`absolute inset-0 transition-opacity ${index === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                    }`}
-                >
-                  <div className="h-full w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-700 to-slate-800 shadow-2xl border border-slate-600">
-                    {/* Image */}
-                    <div className="relative h-3/4 overflow-hidden">
-                      <img
-                        src={project.src}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="h-1/3 flex flex-col items-start justify-start pt-3 px-6 pb-6 gap-5">
-                      <h3 
-                        ref={(el) => (titleRef.current[activeIndex] = el)}
-                        className="text-2xl font-bold text-white"
-                      >
-                        {project.title}
-                      </h3>
-                      <div className="flex">
-                        <div className="scale-[0.65] origin-left">
-                          <button
-                            onClick={() => window.open(project.demo, '_blank', 'noopener,noreferrer')}
-                            className="animated-button"
-                            style={{ color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)' }}
-                          >
-                            <svg viewBox="0 0 24 24" className="arr-2" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                            </svg>
-                            <span className="text">Demo</span>
-                            <span className="circle"></span>
-                            <svg viewBox="0 0 24 24" className="arr-1" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <div className="scale-[0.65] origin-left">
-                          <GithubButton
-                            href={project.github}
-                            label="Code"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Side - Stack Preview */}
-          <div className="hidden lg:flex items-center justify-center relative h-[500px]">
-            <div ref={stackRef} className="relative w-full h-full flex items-center justify-end">
-              {[1, 2, 3, 4].map((offset) => {
-                const project = projects[(activeIndex + offset) % projects.length];
-                const index = 3 - (offset - 1);
-
-                const baseLeft = 150; // Soldan başlanğıc boşluq (px)
-                const gap = 100; // Kartlar arası məsafə
-
-                return (
-                  <div
-                    key={`${project.id}-${offset}`}
-                    className="absolute rounded-xl overflow-hidden shadow-lg border border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 transition-all duration-700 ease-out"
-                    style={{
-                      width: '280px',
-                      height: '350px',
-                      left: `${baseLeft + index * gap}px`, // burda soldan məsafəni tənzimlədik
-                      top: `calc(50% - 175px + ${index * (-25)}px)`,
-                      zIndex: 10 - index,
-                      transform: `rotate(${index * 4}deg) scale(${1 - index * 0.08})`,
-                      opacity: 1 - index * 0.15,
-                    }}
-                  >
-                    <img
-                      src={project.src}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-sm font-semibold text-white">{project.title}</p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <section ref={sectionRef} id="about" className="relative min-h-screen w-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20">
+      <ProjectCarousel projects={projects} />
     </section>
   );
 };
