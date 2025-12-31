@@ -15,10 +15,25 @@ const Footer = () => {
 
           {/* Navigation */}
           <nav className="flex flex-wrap items-center justify-center gap-4 text-slate-600">
-            <a href="#about" className="hover:text-yellow-500 transition-colors">Projects</a>
-            <a href="#skills" className="hover:text-yellow-500 transition-colors">Tech Stack</a>
-            <a href="#contact" className="hover:text-yellow-500 transition-colors">Contact</a>
-            <a href="#root" className="hover:text-yellow-500 transition-colors">Top</a>
+            <a href="#about" className="relative group px-1 py-0.5 text-slate-600 transition-colors duration-300 hover:text-emerald-300">
+              Projects
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </a>
+
+            <a href="#skills" className="relative group px-1 py-0.5 text-slate-600 transition-colors duration-300 hover:text-emerald-300">
+              Tech Stack
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </a>
+
+            <a href="#contact" className="relative group px-1 py-0.5 text-slate-600 transition-colors duration-300 hover:text-emerald-300">
+              Contact
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </a>
+
+            <a href="#root" className="relative group px-1 py-0.5 text-slate-600 transition-colors duration-300 hover:text-emerald-300">
+              Top
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </a>
           </nav>
 
           {/* Socials - Uiverse style */}

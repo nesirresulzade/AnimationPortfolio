@@ -55,9 +55,9 @@ const Contact = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get In <span className="text-yellow-400">Touch</span>
+            <span className="water-text">Get In</span> <span className="live-green-text">Touch</span>
           </h2>
-          <p className="text-slate-400 text-lg">Let's work together on your next project</p>
+          <p className="text-black text-lg">Let's work together on your next project.</p>
         </div>
 
         {/* Contact Form */}

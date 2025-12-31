@@ -380,6 +380,13 @@ h1, h2, h3, h4, h5, h6 {
 .footer-wrapper { height: 80px; padding-top: 0; }
 .footer-icon { width: 44px !important; height: 44px !important; margin: 8px; }
 
+/* Slightly more prominent heading text used across hero/skills/contact */
+.prominent-text {
+  color: #f8fafc; /* very light */
+  font-weight: 800;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
 /* Project Card Buttons - btn-12 variants */
 
 /* Demo Button - Yellow/Gold variant */

@@ -1,4 +1,3 @@
-import React from 'react';
 import { SiReact, SiJavascript, SiTailwindcss, SiGit, SiRedux, SiTypescript, SiVite, SiHtml5, SiCss3, SiBootstrap, SiFirebase, SiGithub, SiFigma } from 'react-icons/si';
 import InfiniteCurvedLoop from './SkillsCurvedText';
 import LogoLoop from './LogoLoop';
@@ -29,7 +28,7 @@ const Skills = () => {
     >
       <div className="mx-auto max-w-7xl px-6 mb-12 text-center">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-          Tech <span className="text-yellow-400">Stack</span>
+          <span className="water-text">Tech</span> <span className="live-green-text">Stack</span>
         </h2>
 
         {/* CurvedLoop ilə dönen text */}
@@ -45,33 +44,20 @@ const Skills = () => {
         </div>
       </div>
 
-      {/* Logo Loop bölməsi */}
+      {/* Combined single-line Logo Loop */}
       <div className="w-full">
-        <div className="mb-8">
+        <div className="mb-6">
           <LogoLoop
-            logos={skills.slice(0, 10)}
-            speed={50}
+            logos={skills}
+            speed={48}
             direction="left"
-            logoHeight={64}
-            gap={48}
+            logoHeight={72}
+            gap={56}
             pauseOnHover
             scaleOnHover
             fadeOut
             fadeOutColor="rgba(15, 23, 42, 0.3)"
-          />
-        </div>
-
-        <div>
-          <LogoLoop
-            logos={skills.slice(10)}
-            speed={50}
-            direction="right"
-            logoHeight={64}
-            gap={48}
-            pauseOnHover
-            scaleOnHover
-            fadeOut
-            fadeOutColor="rgba(15, 23, 42, 0.3)"
+            className="max-w-full"
           />
         </div>
       </div>
