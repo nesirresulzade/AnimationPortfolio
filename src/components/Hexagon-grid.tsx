@@ -5,16 +5,16 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, ContactShadows } from "@react-three/drei"
 import * as THREE from "three"
 
-function Hexagon({ position, baseHeight, phase }: { position: [number, number, number]; baseHeight: number; phase: number }) {
+function Hexagon({ position, baseHeight, phase, pauseMouse }: { position: [number, number, number]; baseHeight: number; phase: number; pauseMouse?: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null)
   const { mouse, viewport } = useThree()
 
   useFrame((state) => {
     if (!meshRef.current) return
 
-    const mouseX = (mouse.x * viewport.width) / 2
+    const mouseX = pauseMouse ? 10000 : (mouse.x * viewport.width) / 2
     // Invert Y so DOM-like downward movement increases positive value
-    const mouseY = -(mouse.y * viewport.height) / 2
+    const mouseY = pauseMouse ? 10000 : -(mouse.y * viewport.height) / 2
 
     const dx = position[0] - mouseX
     const dy = position[2] - mouseY
@@ -40,7 +40,7 @@ function Hexagon({ position, baseHeight, phase }: { position: [number, number, n
   )
 }
 
-function Grid() {
+function Grid({ pauseMouse }: { pauseMouse?: boolean }) {
   const hexSize = 0.55
   const { viewport } = useThree()
 
@@ -72,13 +72,13 @@ function Grid() {
   return (
     <group rotation={[Math.PI / 12, 0, 0]}>
       {hexagons.map((hex) => (
-        <Hexagon key={hex.id} position={hex.position} baseHeight={hex.baseHeight} phase={hex.phase} />
+        <Hexagon key={hex.id} position={hex.position} baseHeight={hex.baseHeight} phase={hex.phase} pauseMouse={pauseMouse} />
       ))}
     </group>
   )
 }
 
-export default function HexagonGrid() {
+export default function HexagonGrid({ pauseMouse = false }: { pauseMouse?: boolean }) {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
       <Canvas className="w-full h-full" shadows camera={{ position: [0, 10, 12], fov: 45 }}>
@@ -95,7 +95,7 @@ export default function HexagonGrid() {
         />
         <pointLight position={[-10, 10, -10]} intensity={1} color="#e0e7ff" />
 
-        <Grid />
+        <Grid pauseMouse={pauseMouse} />
 
         {/* ContactShadows removed to eliminate bottom shadow/wave-like overlay */}
 

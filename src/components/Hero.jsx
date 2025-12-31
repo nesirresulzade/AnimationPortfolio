@@ -1,4 +1,5 @@
 import gsap from 'gsap'
+import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/all'
 import GithubButton from './GithubButton'
@@ -9,6 +10,27 @@ import HexagonGrid from './Hexagon-grid'
 gsap.registerPlugin(ScrollTrigger)
 
 const Hero = () => {
+  const [pauseMouse, setPauseMouse] = useState(false)
+
+  const handlePointerMove = (e) => {
+    const x = e.clientX
+    const y = e.clientY
+    const hero = document.getElementById('hero')
+    if (!hero) return
+
+    const textSelectors = 'h1,h2,h3,h4,p,span,a,button,strong,em,.water-text,.live-green-text,.animated-title,.rotating-text'
+    const elems = hero.querySelectorAll(textSelectors)
+
+    for (const el of elems) {
+      const rect = el.getBoundingClientRect()
+      if (x > rect.left && x < rect.right && y > rect.top && y < rect.bottom) {
+        setPauseMouse(true)
+        return
+      }
+    }
+
+    setPauseMouse(false)
+  }
   // Hero shape animation
   useGSAP(() => {
     gsap.set('#hero-frame', {
@@ -41,11 +63,11 @@ const Hero = () => {
   }, [])
 
   return (
-    <section id="hero" className="relative h-dvh w-full overflow-hidden">
+    <section id="hero" className="relative h-dvh w-full overflow-hidden" onPointerMove={handlePointerMove}>
       {/* HERO FRAME */}
       <div id="hero-frame" className="relative h-dvh w-full overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <HexagonGrid />
+          <div className="absolute inset-0 z-0">
+          <HexagonGrid pauseMouse={pauseMouse} />
         </div>
       </div>
 
