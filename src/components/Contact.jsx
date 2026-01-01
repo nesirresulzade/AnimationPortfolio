@@ -680,19 +680,19 @@ const Contact = () => {
           <div className="flex justify-center md:justify-end" data-ignore-ripples>
             <form ref={formRef} onSubmit={handleSubmit} data-ignore-ripples className="w-full max-w-xl bg-white/6 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-lg">
               <div className="grid grid-cols-1 gap-4">
-                <label className="text-sm text-white/80">Adınız</label>
-                <input name="name" value={formData.name} onChange={handleChange} placeholder="Adınız" className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <label className="text-sm text-white/80">Your Name:</label>
+                <input name="name" value={formData.name} onChange={handleChange} placeholder="Your name" className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
-                <label className="text-sm text-white/80">E-poçt</label>
+                <label className="text-sm text-white/80">Email:</label>
                 <input name="email" value={formData.email} onChange={handleChange} placeholder="email@example.com" className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
-                <label className="text-sm text-white/80">Mesaj</label>
-                <textarea name="message" value={formData.message} onChange={handleChange} rows={6} placeholder="Mesajınızı yazın..." className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <label className="text-sm text-white/80">Message:</label>
+                <textarea name="message" value={formData.message} onChange={handleChange} rows={6} placeholder="Write your message..." className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
                 <div className="flex items-center justify-between mt-2">
-                  <div className="text-sm text-white/70">Orta cavab müddəti: 1-2 gün</div>
+                  <div className="text-sm text-white/70">Typical response time: 1-2 days</div>
                 <div className="flex gap-3">
-                    <Button type="submit">Göndər</Button>
+                    <Button type="submit">Send</Button>
                   </div>
                 </div>
               </div>
