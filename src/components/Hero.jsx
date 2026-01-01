@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/all'
 import GithubButton from './GithubButton'
+import Button from './Button'
 import TrueFocus from './TrueFocus'
 import RotatingText from './RotatingText'
 import HexagonGrid from './Hexagon-grid'
@@ -125,13 +126,9 @@ const Hero = () => {
 
             {/* Buttons */}
             <div className="mt-8 flex items-center justify-between max-w-sm w-full">
-              <a
-                href="/myCV/Nasir_RasulzadaCV.pdf"
-                download
-                className="btn-12"
-              >
-                <span>Download CV</span>
-              </a>
+              <Button href="/myCV/Nasir_RasulzadaCV.pdf" download>
+                Download CV
+              </Button>
 
               <GithubButton
                 href="https://github.com/nesirresulzade"

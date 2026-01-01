@@ -1,8 +1,19 @@
 /* eslint-disable react/prop-types */
-const Button = ({ title = 'Button', className = '' }) => {
+import React from 'react'
+
+const Button = ({ children, className = '', href, download, target, rel, type = 'button', ...props }) => {
+  const cls = `btn ${className}`.trim()
+  if (href) {
+    return (
+      <a href={href} download={download} target={target} rel={rel} className={cls} {...props}>
+        {children}
+      </a>
+    )
+  }
+
   return (
-    <button type="button" className={`btn-12 ${className}`}>
-      <span>{title}</span>
+    <button type={type} className={cls} {...props}>
+      {children}
     </button>
   )
 }

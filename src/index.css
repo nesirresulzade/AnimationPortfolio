@@ -76,66 +76,49 @@ h1, h2, h3, h4, h5, h6 {
 .hero-heading { text-transform: uppercase; font-family: 'Zentry', 'Robert', system-ui, sans-serif; font-weight: 900; font-size: clamp(3rem, 10vw, 12rem); }
 .special-font b { font-family: 'Zentry', 'Robert', system-ui, sans-serif; font-feature-settings: 'ss01' on; }
 
-/* Uiverse btn-12 style */
-.btn-12,
-.btn-12 *,
-.btn-12 :after,
-.btn-12 :before,
-.btn-12:after,
-.btn-12:before {
-  border: 0 solid;
-  box-sizing: border-box;
-}
-.btn-12 {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fff;
+/* Simple project-wide button style (from Uiverse.io example) */
+.btn {
+  min-width: 9.5em;
+  height: 2.6em;
+  margin: 0.5em;
+  padding: 0 1.2rem;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 0.75em;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
-  font-weight: 900;
-  line-height: 1.5;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-.btn-12:disabled { cursor: default; }
-.btn-12:-moz-focusring { outline: auto; }
-.btn-12 svg { display: block; vertical-align: middle; }
-.btn-12 [hidden] { display: none; }
-.btn-12 { display: inline-flex; align-items: center; justify-content: center; border-radius: 99rem; border-width: 2px; overflow: hidden; padding: 0 1.2rem; position: relative; font-size: 0.95rem; white-space: nowrap; height: 2.8rem; min-width: 8rem; }
-.btn-12 span { mix-blend-mode: difference; }
-.btn-12:after,
-.btn-12:before {
-  background: linear-gradient(90deg, #fff 25%, transparent 0, transparent 50%, #fff 0, #fff 75%, transparent 0);
-  content: '';
-  inset: 0;
-  position: absolute;
-  transform: translateY(var(--progress, 100%));
-  transition: transform 0.2s ease;
-}
-.btn-12:after {
-  --progress: -100%;
-  background: linear-gradient(90deg, transparent 0, transparent 25%, #fff 0, #fff 50%, transparent 0, transparent 75%, #fff 0);
-  z-index: -1;
-}
-.btn-12:hover:after,
-.btn-12:hover:before { --progress: 0; }
 
-/* Make btn-12 text black on hover for better contrast */
-.btn-12:hover,
-.btn-12:focus {
-  color: #000;
+.btn:hover {
+  color: black;
 }
-.btn-12:hover span,
-.btn-12:focus span {
-  color: #000;
-  mix-blend-mode: normal;
+
+.btn:after {
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+}
+
+.btn:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 /* Animated GitHub button (Uiverse) */
@@ -398,118 +381,4 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* Project Card Buttons - btn-12 variants */
-
-/* Demo Button - Yellow/Gold variant */
-.btn-demo,
-.btn-demo *,
-.btn-demo :after,
-.btn-demo :before,
-.btn-demo:after,
-.btn-demo:before {
-  border: 0 solid;
-  box-sizing: border-box;
-}
-.btn-demo {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fbbf24;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;
-  font-size: 100%;
-  font-weight: 700;
-  line-height: 1.5;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-}
-.btn-demo:disabled { cursor: default; }
-.btn-demo:-moz-focusring { outline: auto; }
-.btn-demo svg { display: block; vertical-align: middle; }
-.btn-demo [hidden] { display: none; }
-.btn-demo { 
-  border-radius: 99rem; 
-  border-width: 2px;
-  border-color: #fbbf24;
-  overflow: hidden; 
-  padding: 0.6rem 1.2rem; 
-  position: relative; 
-}
-.btn-demo span { mix-blend-mode: difference; }
-.btn-demo:after,
-.btn-demo:before {
-  background: linear-gradient(90deg, #fbbf24 25%, transparent 0, transparent 50%, #fbbf24 0, #fbbf24 75%, transparent 0);
-  content: '';
-  inset: 0;
-  position: absolute;
-  transform: translateY(var(--progress, 100%));
-  transition: transform 0.2s ease;
-}
-.btn-demo:after {
-  --progress: -100%;
-  background: linear-gradient(90deg, transparent 0, transparent 25%, #fbbf24 0, #fbbf24 50%, transparent 0, transparent 75%, #fbbf24 0);
-  z-index: -1;
-}
-.btn-demo:hover:after,
-.btn-demo:hover:before { --progress: 0; }
-
-/* GitHub Button - Cyan variant */
-.btn-github,
-.btn-github *,
-.btn-github :after,
-.btn-github :before,
-.btn-github:after,
-.btn-github:before {
-  border: 0 solid;
-  box-sizing: border-box;
-}
-.btn-github {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #06b6d4;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;
-  font-size: 100%;
-  font-weight: 700;
-  line-height: 1.5;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-}
-.btn-github:disabled { cursor: default; }
-.btn-github:-moz-focusring { outline: auto; }
-.btn-github svg { display: block; vertical-align: middle; }
-.btn-github [hidden] { display: none; }
-.btn-github { 
-  border-radius: 99rem; 
-  border-width: 2px;
-  border-color: #06b6d4;
-  overflow: hidden; 
-  padding: 0.6rem 1.2rem; 
-  position: relative; 
-}
-.btn-github span { mix-blend-mode: difference; }
-.btn-github:after,
-.btn-github:before {
-  background: linear-gradient(90deg, #06b6d4 25%, transparent 0, transparent 50%, #06b6d4 0, #06b6d4 75%, transparent 0);
-  content: '';
-  inset: 0;
-  position: absolute;
-  transform: translateY(var(--progress, 100%));
-  transition: transform 0.2s ease;
-}
-.btn-github:after {
-  --progress: -100%;
-  background: linear-gradient(90deg, transparent 0, transparent 25%, #06b6d4 0, #06b6d4 50%, transparent 0, transparent 75%, #06b6d4 0);
-  z-index: -1;
-}
-.btn-github:hover:after,
-.btn-github:hover:before { --progress: 0; }
+/* Removed legacy specialized button variants (btn-demo, btn-github). Use the single .btn class and the Button component instead. */

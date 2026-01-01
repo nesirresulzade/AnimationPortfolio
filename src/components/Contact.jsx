@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/all'
 import { EffectComposer, RenderPass, EffectPass, Effect } from 'postprocessing'
 import * as THREE from 'three'
+import Button from './Button'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -691,7 +692,7 @@ const Contact = () => {
                 <div className="flex items-center justify-between mt-2">
                   <div className="text-sm text-white/70">Orta cavab müddəti: 1-2 gün</div>
                 <div className="flex gap-3">
-                    <button type="submit" className="btn-12">Göndər</button>
+                    <Button type="submit">Göndər</Button>
                   </div>
                 </div>
               </div>

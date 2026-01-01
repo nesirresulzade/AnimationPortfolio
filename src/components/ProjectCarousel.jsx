@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import GithubButton from './GithubButton';
+import Button from './Button';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,7 +95,7 @@ const ProjectCarousel = ({ projects }) => {
                   <div className="h-1/3 flex flex-col items-start justify-start pt-3 px-6 pb-6 gap-5">
                     <h3 ref={(el) => (titleRef.current[activeIndex] = el)} className="text-2xl font-bold text-white">{project.title}</h3>
                     <div className="flex items-center gap-3">
-                      <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn-12"><span>Demo</span></a>
+                      <Button href={project.demo} target="_blank" rel="noopener noreferrer">Demo</Button>
                       <GithubButton href={project.github} label="Code" />
                     </div>
                   </div>
