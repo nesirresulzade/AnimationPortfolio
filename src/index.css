@@ -127,6 +127,17 @@ h1, h2, h3, h4, h5, h6 {
 .btn-12:hover:after,
 .btn-12:hover:before { --progress: 0; }
 
+/* Make btn-12 text black on hover for better contrast */
+.btn-12:hover,
+.btn-12:focus {
+  color: #000;
+}
+.btn-12:hover span,
+.btn-12:focus span {
+  color: #000;
+  mix-blend-mode: normal;
+}
+
 /* Animated GitHub button (Uiverse) */
 .animated-button {
   position: relative;
