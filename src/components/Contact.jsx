@@ -610,6 +610,7 @@ const PixelBlast = ({
 
 const Contact = () => {
   const formRef = useRef(null)
+  const leftRef = useRef(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -629,6 +630,22 @@ const Contact = () => {
       },
       duration: 1,
       ease: 'power2.out',
+    })
+  })
+
+  useGSAP(() => {
+    gsap.from(leftRef.current, {
+      opacity: 0,
+      x: -40,
+      duration: 0.8,
+      ease: 'power2.out',
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: leftRef.current,
+        start: 'top center+=100',
+        end: 'center center',
+        scrub: 0.5,
+      },
     })
   })
 
@@ -667,7 +684,7 @@ const Contact = () => {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left: Heading / intro */}
-          <div data-ignore-ripples className="text-left text-white space-y-6">
+          <div ref={leftRef} data-ignore-ripples className="text-left text-white space-y-6">
             <h2 className="text-5xl font-extrabold mb-0">
               <span className="water-text">Get In</span> <span className="live-green-text">Touch</span>
             </h2>
