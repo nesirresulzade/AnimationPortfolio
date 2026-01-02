@@ -617,6 +617,33 @@ const Contact = () => {
     subject: '',
     message: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState('')
+  const [submitError, setSubmitError] = useState('')
+
+  // Load EmailJS via CDN and init with public key
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js'
+    script.async = true
+    script.onload = () => {
+      if (window.emailjs) {
+        try {
+          window.emailjs.init('2j13NfEIZItUHwGv4')
+          // console.log('✅ EmailJS loaded')
+        } catch (e) {
+          console.error('EmailJS init error', e)
+        }
+      }
+    }
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
+
+  const isEmailValid = !!formData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
 
   useGSAP(() => {
     gsap.from(formRef.current, {
@@ -656,17 +683,68 @@ const Contact = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Add your form submission logic here
-    console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    })
+    setIsSubmitting(true)
+    setSubmitStatus('')
+    setSubmitError('')
+
+    // If email is invalid, show inline error immediately and don't attempt send
+    if (!isEmailValid) {
+      setIsSubmitting(false)
+      setSubmitStatus('error')
+      setSubmitError('Invalid email — please enter a valid email address.')
+      setTimeout(() => {
+        setSubmitStatus('')
+        setSubmitError('')
+      }, 3000)
+      return
+    }
+
+    try {
+      if (window.emailjs && window.emailjs.send) {
+        const templateParams = {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        }
+
+        await window.emailjs.send(
+          'service_z64ubru',
+          'template_we8j4gk',
+          templateParams
+        )
+
+        setSubmitStatus('success')
+        setSubmitError('')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => {
+          setSubmitStatus('')
+          setSubmitError('')
+        }, 3000)
+      } else {
+        console.error('EmailJS not available')
+        setSubmitStatus('error')
+        setSubmitError('Email service unavailable. Please try again later.')
+        setTimeout(() => {
+          setSubmitStatus('')
+          setSubmitError('')
+        }, 3000)
+      }
+    } catch (err) {
+      console.error('Mail send error:', err)
+      setSubmitStatus('error')
+      // Prefer EmailJS error text/message when available
+      const errMsg = err?.text || err?.message || String(err)
+      setSubmitError(errMsg)
+      setTimeout(() => {
+        setSubmitStatus('')
+        setSubmitError('')
+      }, 3000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -703,13 +781,28 @@ const Contact = () => {
                 <label className="text-sm text-white/80">Email:</label>
                 <input name="email" value={formData.email} onChange={handleChange} placeholder="email@example.com" className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
+                <label className="text-sm text-white/80">Subject:</label>
+                <input name="subject" value={formData.subject} onChange={handleChange} placeholder="Subject" className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+
                 <label className="text-sm text-white/80">Message:</label>
                 <textarea name="message" value={formData.message} onChange={handleChange} rows={6} placeholder="Write your message..." className="w-full p-3 rounded-lg bg-white/5 border border-white/8 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
                 <div className="flex items-center justify-between mt-2">
-                  <div className="text-sm text-white/70">Typical response time: 1-2 days</div>
+                  <div className={
+                    submitStatus === 'success'
+                      ? 'text-sm text-emerald-400 response-text success'
+                      : submitStatus === 'error'
+                      ? 'text-sm text-red-400 response-text error'
+                      : 'text-sm text-white/70'
+                  }>
+                    {submitStatus === 'success'
+                      ? 'Message sent successfully!'
+                      : submitStatus === 'error'
+                      ? (submitError || 'Error sending message. Please try again.')
+                      : 'Typical response time: 1-2 days'}
+                  </div>
                 <div className="flex gap-3">
-                    <Button type="submit">Send</Button>
+                    <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending...' : 'Send'}</Button>
                   </div>
                 </div>
               </div>

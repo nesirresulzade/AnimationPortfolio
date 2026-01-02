@@ -207,6 +207,31 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Inline response text animations for contact form */
+.response-text {
+  display: inline-block;
+  transition: transform 360ms cubic-bezier(.22,.9,.33,1), opacity 360ms;
+  will-change: transform, opacity;
+}
+.response-text.success {
+  color: #10b981; /* emerald */
+  animation: response-success 560ms cubic-bezier(.22,.9,.33,1);
+}
+.response-text.error {
+  color: #ef4444; /* red-500 */
+  animation: response-error 560ms cubic-bezier(.22,.9,.33,1);
+}
+@keyframes response-success {
+  0% { transform: translateY(6px) scale(.98); opacity: 0; }
+  60% { transform: translateY(-8px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes response-error {
+  0% { transform: translateY(6px) rotate(-2deg); opacity: 0; }
+  60% { transform: translateY(-6px) rotate(2deg); opacity: 1; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+
 /* Gradient text animation */
 .gradient-text {
   background: linear-gradient(
