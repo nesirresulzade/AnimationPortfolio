@@ -237,7 +237,7 @@ float maskDiamond(vec2 p, float cov){
 void main(){
   float pixelSize = uPixelSize;
   vec2 fragCoord = gl_FragCoord.xy - uResolution * .5;
-  float aspectRatio = uResolution.x / uResolution.y;
+  float aspectRatio = uResolution.x / max(uResolution.y, 1.0);
 
   vec2 pixelId = floor(fragCoord / pixelSize);
   vec2 pixelUV = fract(fragCoord / pixelSize);
@@ -369,7 +369,7 @@ const PixelBlast = ({
       if (transparent) renderer.setClearAlpha(0);
       else renderer.setClearColor(0x000000, 1);
       const uniforms = {
-        uResolution: { value: new THREE.Vector2(0, 0) },
+        uResolution: { value: new THREE.Vector2(1, 1) },
         uTime: { value: 0 },
         uColor: { value: new THREE.Color(color) },
         uClickPos: {
@@ -461,8 +461,17 @@ const PixelBlast = ({
         composer.addPass(noisePass);
       }
       if (composer) composer.setSize(renderer.domElement.width, renderer.domElement.height);
+      const mapToPixels = (e) => {
+        const rect = container.getBoundingClientRect();
+        return {
+          fx: e.clientX - rect.left,
+          fy: rect.height - (e.clientY - rect.top),
+          w: rect.width,
+          h: rect.height
+        };
+      };
+
       const onPointerDown = e => {
-        // ignore clicks over elements marked to skip ripples
         const hit = document.elementFromPoint(e.clientX, e.clientY);
         if (hit && hit.closest && hit.closest('[data-ignore-ripples]')) return;
         const { fx, fy } = mapToPixels(e);
@@ -471,72 +480,57 @@ const PixelBlast = ({
         uniforms.uClickTimes.value[ix] = uniforms.uTime.value;
         if (threeRef.current) threeRef.current.clickIx = (ix + 1) % MAX_CLICKS;
       };
+
       const onPointerMove = e => {
         const hit = document.elementFromPoint(e.clientX, e.clientY);
-        // always update touch texture, but only spawn ripples when not over ignored areas
         const { fx, fy, w, h } = mapToPixels(e);
         if (touch) touch.addTouch({ x: fx / w, y: fy / h });
         if (hit && hit.closest && hit.closest('[data-ignore-ripples]')) return;
 
         if (enableRipples) {
-          const now = uniforms.uTime?.value ?? (timeOffset + clock.getElapsedTime() * speedRef.current);
+          const now = uniforms.uTime.value;
           const st = threeRef.current || {};
           const lastPos = st.lastMovePos;
-          const dx = lastPos ? Math.abs(lastPos.x - fx) : Math.abs(fx - (st._initX ?? fx));
-          const dy = lastPos ? Math.abs(lastPos.y - fy) : Math.abs(fy - (st._initY ?? fy));
-          const dist = Math.hypot(dx, dy);
-          const minDist = 2; // pixels before spawning another ripple
-          const minInterval = 0.02; // seconds between ripples
-          const lastTime = st.lastRippleTime || 0;
-          if (dist > minDist && now - lastTime > minInterval) {
+          const dist = lastPos ? Math.hypot(lastPos.x - fx, lastPos.y - fy) : 0;
+
+          if (dist > 2 || !lastPos) {
             const ix = threeRef.current?.clickIx ?? 0;
             uniforms.uClickPos.value[ix].set(fx, fy);
             uniforms.uClickTimes.value[ix] = now;
             if (threeRef.current) {
               threeRef.current.clickIx = (ix + 1) % MAX_CLICKS;
-              threeRef.current.lastRippleTime = now;
               threeRef.current.lastMovePos = { x: fx, y: fy };
             }
-          } else {
-            if (threeRef.current && !threeRef.current.lastMovePos) threeRef.current.lastMovePos = { x: fx, y: fy };
           }
         }
       };
+
+      container.addEventListener('pointerdown', onPointerDown);
+      container.addEventListener('pointermove', onPointerMove);
+
       let raf = 0;
       const animate = () => {
-
-        uniforms.uTime.value = timeOffset + clock.getElapsedTime() * speedRef.current;
+        uniforms.uTime.value = clock.getElapsedTime() * speedRef.current;
         if (liquidEffect) liquidEffect.uniforms.get('uTime').value = uniforms.uTime.value;
         if (composer) {
           if (touch) touch.update();
-          composer.passes.forEach(p => {
-            const effs = p.effects;
-            if (effs)
-              effs.forEach(eff => {
-                const u = eff.uniforms?.get('uTime');
-                if (u) u.value = uniforms.uTime.value;
-              });
-          });
           composer.render();
         } else renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
       };
       raf = requestAnimationFrame(animate);
+
       threeRef.current = {
         renderer,
         scene,
-        camera,
-        material,
-        clock,
-        clickIx: 0,
+        composer,
         uniforms,
         resizeObserver: ro,
         raf,
         quad,
-        timeOffset,
-        composer,
-        touch,
-        liquidEffect
+        material,
+        onPointerDown,
+        onPointerMove
       };
     } else {
       const t = threeRef.current;
@@ -553,13 +547,6 @@ const PixelBlast = ({
       t.uniforms.uEdgeFade.value = edgeFade;
       if (transparent) t.renderer.setClearAlpha(0);
       else t.renderer.setClearColor(0x000000, 1);
-      if (t.liquidEffect) {
-        const uStrength = t.liquidEffect;
-        if (uStrength) uStrength.value = liquidStrength;
-        const uFreq = t.liquidEffect.uniforms.get('uFreq');
-        if (uFreq) uFreq.value = liquidWobbleSpeed;
-      }
-      if (t.touch) t.touch.radiusScale = liquidRadius;
     }
     prevConfigRef.current = cfg;
     return () => {
@@ -568,35 +555,17 @@ const PixelBlast = ({
       const t = threeRef.current;
       t.resizeObserver?.disconnect();
       cancelAnimationFrame(t.raf);
+      container.removeEventListener('pointerdown', t.onPointerDown);
+      container.removeEventListener('pointermove', t.onPointerMove);
       t.quad?.geometry.dispose();
       t.material.dispose();
       t.composer?.dispose();
+      t.renderer.forceContextLoss();
       t.renderer.dispose();
       if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
       threeRef.current = null;
     };
-  }, [
-    antialias,
-    liquid,
-    noiseAmount,
-    pixelSize,
-    patternScale,
-    patternDensity,
-    enableRipples,
-    rippleIntensityScale,
-    rippleThickness,
-    rippleSpeed,
-    pixelSizeJitter,
-    edgeFade,
-    transparent,
-    liquidStrength,
-    liquidRadius,
-    liquidWobbleSpeed,
-    autoPauseOffscreen,
-    variant,
-    color,
-    speed
-  ]);
+  }, [antialias, liquid, noiseAmount, transparent, pixelSize, patternScale, patternDensity, enableRipples, rippleIntensityScale, rippleThickness, rippleSpeed, pixelSizeJitter, edgeFade, speed, variant, color]);
 
   return (
     <div
@@ -648,30 +617,28 @@ const Contact = () => {
   useGSAP(() => {
     gsap.from(formRef.current, {
       opacity: 0,
-      y: 50,
+      y: 30,
+      duration: 1,
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: formRef.current,
-        start: 'top center+=100',
-        end: 'center center',
-        scrub: 0.5,
-      },
-      duration: 1,
-      ease: 'power2.out',
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      }
     })
   })
 
   useGSAP(() => {
-    gsap.from(leftRef.current, {
+    gsap.from(leftRef.current.children, {
       opacity: 0,
       x: -40,
       duration: 0.8,
-      ease: 'power2.out',
-      stagger: 0.12,
+      ease: 'power3.out',
+      stagger: 0.1,
       scrollTrigger: {
         trigger: leftRef.current,
-        start: 'top center+=100',
-        end: 'center center',
-        scrub: 0.5,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
       },
     })
   })
@@ -689,7 +656,6 @@ const Contact = () => {
     setSubmitStatus('')
     setSubmitError('')
 
-    // If email is invalid, show inline error immediately and don't attempt send
     if (!isEmailValid) {
       setIsSubmitting(false)
       setSubmitStatus('error')
@@ -735,7 +701,6 @@ const Contact = () => {
     } catch (err) {
       console.error('Mail send error:', err)
       setSubmitStatus('error')
-      // Prefer EmailJS error text/message when available
       const errMsg = err?.text || err?.message || String(err)
       setSubmitError(errMsg)
       setTimeout(() => {
@@ -792,16 +757,16 @@ const Contact = () => {
                     submitStatus === 'success'
                       ? 'text-sm text-emerald-400 response-text success'
                       : submitStatus === 'error'
-                      ? 'text-sm text-red-400 response-text error'
-                      : 'text-sm text-white/70'
+                        ? 'text-sm text-red-400 response-text error'
+                        : 'text-sm text-white/70'
                   }>
                     {submitStatus === 'success'
                       ? 'Message sent successfully!'
                       : submitStatus === 'error'
-                      ? (submitError || 'Error sending message. Please try again.')
-                      : 'Typical response time: 1-2 days'}
+                        ? (submitError || 'Error sending message. Please try again.')
+                        : 'Typical response time: 1-2 days'}
                   </div>
-                <div className="flex gap-3">
+                  <div className="flex gap-3">
                     <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending...' : 'Send'}</Button>
                   </div>
                 </div>

@@ -1,94 +1,68 @@
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
-import gsap from 'gsap'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const RotatingText = forwardRef((props, ref) => {
-  const {
-    texts = [],
-    rotationInterval = 2000,
-    stagger = 0.04,
-    auto = true,
-    loop = true,
-    className = '',
-    onNext
-  } = props
-
-  const containerRef = useRef(null)
-  const charsRef = useRef([])
+const RotatingText = ({
+  texts = [],
+  rotationInterval = 2000,
+  stagger = 0.025,
+  auto = true,
+  loop = true,
+  className = '',
+  onNext
+}) => {
   const [index, setIndex] = useState(0)
 
-  const splitChars = text =>
-    typeof Intl !== 'undefined' && Intl.Segmenter
-      ? [...new Intl.Segmenter('en', { granularity: 'grapheme' }).segment(text)].map(s => s.segment)
-      : Array.from(text)
+  useEffect(() => {
+    if (!auto || texts.length <= 1) return
 
-  const animateIn = () => {
-    gsap.fromTo(
-      charsRef.current,
-      { yPercent: 120, opacity: 0 },
-      {
-        yPercent: 0,
-        opacity: 1,
-        duration: 0.6,
-        ease: 'power3.out',
-        stagger
+    const timeout = setTimeout(() => {
+      const nextIndex = index === texts.length - 1 ? (loop ? 0 : index) : index + 1
+      if (nextIndex !== index) {
+        setIndex(nextIndex)
+        onNext?.(nextIndex)
       }
-    )
-  }
+    }, rotationInterval)
 
-  const animateOut = callback => {
-    gsap.to(charsRef.current, {
-      yPercent: -120,
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power3.in',
-      stagger,
-      onComplete: callback
-    })
-  }
+    return () => clearTimeout(timeout)
+  }, [index, auto, rotationInterval, texts.length, loop, onNext])
 
-  const next = () => {
-    animateOut(() => {
-      const nextIndex =
-        index === texts.length - 1 ? (loop ? 0 : index) : index + 1
-      setIndex(nextIndex)
-      onNext?.(nextIndex)
-    })
-  }
-
-  useImperativeHandle(ref, () => ({
-    next
-  }))
-
-  useEffect(() => {
-    animateIn()
-  }, [index])
-
-  useEffect(() => {
-    if (!auto) return
-    const id = setInterval(next, rotationInterval)
-    return () => clearInterval(id)
-  }, [index, auto, rotationInterval])
-
-  const characters = splitChars(texts[index] || '')
+  const currentText = texts[index] || ''
+  const characters = typeof Intl !== 'undefined' && Intl.Segmenter
+    ? [...new Intl.Segmenter('en', { granularity: 'grapheme' }).segment(currentText)].map(s => s.segment)
+    : Array.from(currentText)
 
   return (
-    <span
-      ref={containerRef}
-      className={`inline-flex flex-wrap overflow-hidden ${className}`}
-      aria-label={texts[index]}
-    >
-      {characters.map((char, i) => (
-        <span
-          key={i}
-          ref={el => (charsRef.current[i] = el)}
-          className="inline-block will-change-transform"
+    <span className={`inline-flex flex-wrap overflow-hidden ${className}`}>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={index}
+          className="flex flex-wrap"
+          initial="initial"
+          animate="animate"
+          exit="exit"
         >
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
+          {characters.map((char, i) => (
+            <motion.span
+              key={i}
+              variants={{
+                initial: { y: '100%', opacity: 0 },
+                animate: { y: 0, opacity: 1 },
+                exit: { y: '-100%', opacity: 0 }
+              }}
+              transition={{
+                duration: 0.4,
+                ease: [0.23, 1, 0.32, 1],
+                delay: i * stagger
+              }}
+              className="inline-block whitespace-pre"
+            >
+              {char}
+            </motion.span>
+          ))}
+        </motion.span>
+      </AnimatePresence>
     </span>
   )
-})
+}
 
-RotatingText.displayName = 'RotatingText'
 export default RotatingText

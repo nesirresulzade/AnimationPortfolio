@@ -1,5 +1,5 @@
 import gsap from 'gsap'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/all'
 import GithubButton from './GithubButton'
@@ -12,25 +12,29 @@ gsap.registerPlugin(ScrollTrigger)
 
 const Hero = () => {
   const [pauseMouse, setPauseMouse] = useState(false)
+  const textElementsRef = useRef(null)
 
   const handlePointerMove = (e) => {
     const x = e.clientX
     const y = e.clientY
-    const hero = document.getElementById('hero')
-    if (!hero) return
 
-    const textSelectors = 'h1,h2,h3,h4,p,span,a,button,strong,em,.water-text,.live-green-text,.animated-title,.rotating-text'
-    const elems = hero.querySelectorAll(textSelectors)
+    if (!textElementsRef.current) {
+      const hero = document.getElementById('hero')
+      if (!hero) return
+      const textSelectors = 'h1,h2,h3,h4,p,span,a,button,strong,em,.water-text,.live-green-text,.animated-title,.rotating-text'
+      textElementsRef.current = hero.querySelectorAll(textSelectors)
+    }
 
+    const elems = textElementsRef.current
     for (const el of elems) {
       const rect = el.getBoundingClientRect()
       if (x > rect.left && x < rect.right && y > rect.top && y < rect.bottom) {
-        setPauseMouse(true)
+        if (!pauseMouse) setPauseMouse(true)
         return
       }
     }
 
-    setPauseMouse(false)
+    if (pauseMouse) setPauseMouse(false)
   }
   // Hero shape animation
   useGSAP(() => {
@@ -67,7 +71,7 @@ const Hero = () => {
     <section id="hero" className="relative h-dvh w-full overflow-hidden" onPointerMove={handlePointerMove}>
       {/* HERO FRAME */}
       <div id="hero-frame" className="relative h-dvh w-full overflow-hidden">
-          <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0">
           <HexagonGrid pauseMouse={pauseMouse} />
         </div>
       </div>
@@ -81,22 +85,22 @@ const Hero = () => {
 
             {/* ✅ Frontend Developer — Hi, I'm üstündə */}
             <div className="mb-2">
-                <TrueFocus
-                  direction="row"
-                  sentence="Frontend Developer"
-                  separator=" "
-                  manualMode={false}
-                  blurAmount={6}
-                  borderColor="#00d4ff"
-                  glowColor="rgba(0, 212, 255, 0.8)"
-                  animationDuration={0.6}
-                  pauseBetweenAnimations={1.5}
-                  wordStyles={[
-                    { className: 'water-text text-4xl md:text-7xl drop-shadow-2xl' },
-                    { className: 'live-green-text text-4xl md:text-7xl drop-shadow-2xl' }
-                  ]}
-                />
-                <div className="h-10" />
+              <TrueFocus
+                direction="row"
+                sentence="Frontend Developer"
+                separator=" "
+                manualMode={false}
+                blurAmount={6}
+                borderColor="#00d4ff"
+                glowColor="rgba(0, 212, 255, 0.8)"
+                animationDuration={0.6}
+                pauseBetweenAnimations={1.5}
+                wordStyles={[
+                  { className: 'water-text text-4xl md:text-7xl drop-shadow-2xl' },
+                  { className: 'live-green-text text-4xl md:text-7xl drop-shadow-2xl' }
+                ]}
+              />
+              <div className="h-10" />
             </div>
 
             {/* Hi I'm */}

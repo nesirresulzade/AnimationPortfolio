@@ -428,5 +428,11 @@ h1, h2, h3, h4, h5, h6 {
 .skill-card:hover .skill-icon svg {
   transform: scale(1.12);
   filter: brightness(1.5) drop-shadow(0 18px 36px rgba(var(--accent), 0.28));
+}/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import InteractivePortfolio from './components/InteractivePortfolio/InteractivePortfolio'
 import About from './components/About'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
@@ -34,9 +35,12 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background text-slate-900">
+    <div className="min-h-screen bg-background text-slate-900 overflow-x-hidden">
       <Navbar />
       <Hero />
+      <div id="interactive-concept">
+        <InteractivePortfolio />
+      </div>
       <About />
       <Skills />
       <Contact />
