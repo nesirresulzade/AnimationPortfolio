@@ -23,7 +23,7 @@ const ProjectShowcase = ({ category, onBack }) => {
             const isMobileCategory = category === 'MOBILE';
             const entries = gsap.utils.toArray('.project-entry');
 
-            ScrollTrigger.getAll().forEach(t => t.kill());
+
 
             entries.forEach((entry) => {
                 gsap.fromTo(entry,

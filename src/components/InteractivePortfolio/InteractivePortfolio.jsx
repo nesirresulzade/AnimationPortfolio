@@ -4,6 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProjectShowcase from './ProjectShowcase';
 import ParticleTransition from './ParticleTransition';
 import { Canvas } from '@react-three/fiber';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const InteractivePortfolio = () => {
     const [view, setView] = useState('home');
@@ -26,6 +30,7 @@ const InteractivePortfolio = () => {
         } else {
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
+            ScrollTrigger.refresh();
         }
         return () => {
             document.body.style.overflow = '';
